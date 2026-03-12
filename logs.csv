@@ -1,0 +1,25 @@
+date,category,amount,description
+2024-01-01,Groceries,45.50,Initial stock
+2024-01-01,Dining,30.00,Lunch
+2024-01-01,Utilities,15.25,Water refill
+2024-01-02,Groceries,12.00,Weekly milk
+2024-01-02,Electronics,120.00,Replacement cables
+,Groceries,12.00,Forgot milk
+2024-01-03,Dining,15.00,Breakfast
+2024-01-03,Groceries,65.00,General restock
+2024-01-04,Utilities,45.00,Internet bill
+2024-01-04,Dining,22.50,Dinner
+2024-01-05,Groceries,10.00,Bread and eggs
+2024-01-05,Electronics,15.00,Batteries
+2024-01-06,Dining,EXEMPT,Corporate lunch
+2024-01-06,Groceries,55.20,Produce
+2024-01-07,Utilities,80.00,Heating
+2024-01-07,Dining,18.00,Sunday brunch
+2024-01-08,Groceries,33.40,Cleaning supplies
+2024-01-08,Groceries,22.10,Dinner items, extra column trap
+2024-01-09,Dining,12.50,Quick snack
+2024-01-09,Electronics,200.00,Monitor mount
+2024-01-10,Groceries,40.00,Fresh fruit
+2024-01-10,Utilities,25.00,Trash pickup
+2024-01-11,Dining,35.00,Team dinner
+2024-01-11,Groceries,14.00,Milk and juice
