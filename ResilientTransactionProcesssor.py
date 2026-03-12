@@ -30,12 +30,16 @@ Deliverables
 Questions
 How are do you want avg to be calculated with excptions
 how to deal with invaled dates for calculation?
+Where does line counting start?
+how should the json and errors.log file look?
 
 
 '''
 
 
 import csv
+import os
+import json
 
 # Gets total and avg amount for category 
 def categoryTotal(categoryList):
@@ -52,13 +56,12 @@ def categoryTotal(categoryList):
     avg = round(avg, 2)
     return total, avg
 
+# Make list for a category
 def makeCategoryList(categoryName, lst):
     newList = []
     totals = categoryTotal(lst)
     newList += [categoryName, totals[0], totals[1]]
     return newList
-
-        
 
 # Checks and changes string to float and adds total for date
 def dateTotal(amount1, amount2):
@@ -83,6 +86,11 @@ def dateTotal(amount1, amount2):
                 return num1
             except:
                 return None
+     
+def checkRow(lineCount, message):
+    newList = [lineCount, message]
+    return newList
+
 
 # Reads csv file
 with open('logs.csv', mode = 'r', newline= '') as file:
@@ -93,12 +101,29 @@ with open('logs.csv', mode = 'r', newline= '') as file:
     diningList = []
     utilitiesList = []
     electronicsList =[]
+    badLineList = []
+    lineCounter =1
     avgCounter = 0
     dateCounter = 0
+    #badLineBool = False
     firstloop = True
 
     next(csv_reader, None) #skips heading
     for row in csv_reader:
+
+        # Check each row to see if it is valid 
+        lineCounter += 1
+        if row[0] == '':
+            badLineList.append(checkRow(lineCounter, "No date provided",))
+        if row[1] == '':
+            badLineList.append(checkRow(lineCounter, "Not a current catagory"))
+        if row[2] == '':
+            badLineList.append(checkRow(lineCounter, "Not valid price"))
+        if row[3] == '':
+            badLineList.append(checkRow(lineCounter, "No comment added"))
+        elif len(row) > 4:
+            badLineList.append(checkRow(lineCounter, "Too many entrys"))
+
         if firstloop == True:
             newRowList = [row[0], 0, 0]
             spendingInfoListByDate.append(newRowList)
@@ -136,9 +161,7 @@ with open('logs.csv', mode = 'r', newline= '') as file:
     for i in range(len(categoryList)):
         spendingInfoListByCatagory.append(makeCategoryList(categoryNameList[i], categoryList[i]))
 
-    
-    #spendingInfoListByCatagory.extend([groceriesList, diningList, utilitiesList, electronicsList])
-
+    # Populate the list for catagory
     for i in range(len(spendingInfoListByCatagory)):
         print(spendingInfoListByCatagory[i])
 
@@ -146,4 +169,42 @@ with open('logs.csv', mode = 'r', newline= '') as file:
     for i in range(len(spendingInfoListByDate)):
         print(spendingInfoListByDate[i])
 
+    print()
+    for i in range(len(badLineList)):
+        print(badLineList[i])
 
+
+def intToString(value):
+    newString = str(value)
+    return newString
+
+
+filename = "errors.log"
+
+if os.path.isfile(filename):
+    os.remove(filename)
+
+with open(filename, 'a') as f:
+    f.write("line, error\n")
+    for i in range(len(badLineList)):
+        for j in range(2):
+            if isinstance(badLineList[i][j], int):
+                f.write(intToString(badLineList[i][j]))
+                f.write(", ")  
+            else:
+                f.write(badLineList[i][j])
+             
+        f.write("\n")
+
+
+
+jsonFilename = "processed_data.json"
+dateHeader = ["date", "total", "average"]
+dictDate = [dict(zip(dateHeader, row)) for row in spendingInfoListByDate]
+catHeader = ["category","total", "average"]
+dictCat = [dict(zip(catHeader, row)) for row in spendingInfoListByCatagory]
+
+with open(jsonFilename, 'w') as json_file:
+    #f.write("date, total, avg")
+    json.dump(dictCat, json_file, indent=1)
+    json.dump(dictDate, json_file, indent=1)
