@@ -2,22 +2,33 @@
 
 <h3>Python</h3>
 
-<h5>What I did</h5>
-1) I wanted to be able to pull the CSV file in and see how it looks, and got rid of the heading.<br>
-2) I tackled the date sorting by going down the list in the CSV file by adding them to a list and <br>
-adding the prices as I went, while having a counter to keep track of how many times something was spent.<br>
-3) I needed to make the numbered amount into a float to add the numbers up, so I created a function <br>
-that takes 2 two values and checks to see if they are floats or strings and if they can be converted into a float.<br>
-4) Then I took the list that holds the date, total price of things, and then divided the number of<br>
-transactions by the counter I had made to give me the average, and put that list into another list to group <br>
-all of the days, showing me [day, total, avg].<br>
-5) I took a bit of a different approach to the category sorting by getting all of the values and putting them into <br>
-their own list.<br>
-6) I then make 2 more lists, one with the names of the categories and the second one with the lists that I made and put <br>
-them through two functions.<br>
-7) The first function takes the name of the category and the list that correlates to it and passes it to the second <br>
-function to get the total and avg vales to give to the first function that puts it all together to make a list <br>
-that shows [name, total, avg] and then is sent back to put into another list to group them all together.<br>
+<h5>What I did</h5><br>
+
+1) I first wanted to make sure I could successfully load the CSV file and view its contents, so I wrote code to read the file and removed the header row.<br>
+
+2) To handle date sorting, I iterated through the CSV file row by row. As I processed each entry, I added the prices to a running total and used a counter to keep track of how many transactions occurred for each day. <br>
+
+3) Since the amounts in the file were strings, I needed to convert them to floats in order to perform calculations. To do this, I created a function that takes two values and checks whether they are floats or strings, and converts them to floats when possible.<br>
+
+4) After calculating the totals, I stored the date and total transaction amount in a list. I then divided the total by the transaction counter to calculate the average amount spent for that day. This information was stored in the format [day, total, avg], and each day’s data was added to a larger list that grouped all daily summaries together.<br>
+
+5) For category sorting, I took a slightly different approach. I first collected all category values from the CSV file and placed them into their own list.<br>
+
+6) I then created two additional lists: one containing the category names and another containing the corresponding transaction lists. These were passed into two functions for processing.<br>
+
+7) The first function accepts a category name and its associated list of transactions, then sends that data to a second function. The second function calculates the total and average values and returns them to the first function. The first function then formats the results into a list [name, total, avg], which is returned and stored in another list that groups all category summaries together.<br>
+
+8) Next, I handled incorrectly formatted rows in the CSV file. I created a list to store problematic rows and a line counter to track the row number being processed.<br>
+
+9) I implemented checks for missing values in each column and for rows containing more than four fields. If a problem was detected, the program passed the line number and a message describing the issue to a function that recorded the error.<br>
+
+10) After collecting all errors, I wrote the contents of the bad line list to a file named errors.log, which stores all incorrectly formatted rows.<br>
+
+11) To support this, I created a function that converts the elements in the error list into strings so they can be properly written to the log file.<br>
+
+12) I also noticed that running the program multiple times would overwrite the existing errors.log file. To prevent issues with leftover data, I added logic to delete the old file if it already existed before creating a new one. <br>
+
+13) Finally, I generated a JSON file for the processed date and category data. I created two additional lists containing the labels for the information in the date and category summaries, then used zip to combine the labels with their corresponding values before writing them to the JSON file.<br>
 
 <h5>Why I did this</h5>
 For me, a list done correctly can keep things organized and can be seen and read easily.
