@@ -1,0 +1,103 @@
+[
+ {
+    "id":1,
+    "parentId":null,
+    "text":"Welcome to the thread."
+ },
+ {
+    "id":2,
+    "parentId":null,
+    "text":"This is another main topic."
+ },
+ {
+    "id":3,
+    "parentId":1,
+    "text":"I agree with the first post."
+ },
+ {
+    "id":4,
+    "parentId":1,
+    "text":"I have a different perspective."
+ },
+ {
+    "id":5,
+    "parentId":3,
+    "text":"Could you elaborate on that?"
+ },
+ {
+
+    "id":6,
+    "parentId":4,
+    "text":"Sure, here is the detail."
+ },
+ {
+    "id":7,
+    "parentId":2,
+    "text":"Interesting point on the second topic."
+ },
+ {
+    "id":8,
+    "parentId":7,
+    "text":"I found this helpful."
+ },
+ {
+    "id":9,
+    "parentId":8,
+    "text":"Glad you liked it!"
+ },
+ {
+    "id":10,
+    "parentId":null,
+    "text":"Third main discussion point."
+ },
+ {
+    "id":11,
+    "parentId":10,
+    "text":"Starting a new sub-thread."
+ },
+ {
+    "id":12,
+    "parentId":11,
+    "text":"And here is a reply to that."
+ },
+ {
+    "id":13,
+    "parentId":12,
+    "text":"Deeply nested comment level 4."
+ },
+ {
+    "id":14,
+    "parentId":13,
+    "text":"Deeply nested comment level 5."
+ },
+ {
+    "id":15,
+    "parentId":4,
+    "text":"Also, what about X?"
+ },
+ {
+    "id":16,
+    "parentId":2,
+    "text":"Adding to the second topic."
+ },
+ {
+    "id":17,
+    "parentId":16,
+    "text":"This is getting complicated."
+ },
+ {
+    "id":18,
+    "parentId":5,
+    "text":"Sub-reply to the inquiry."
+ },
+ {
+    "id":19,
+    "parentId":18,
+    "text":"An answer to the sub-reply."
+ },
+ {
+    "id":20,
+    "parentId":10,
+    "text":"Another branch here."
+ }
+]

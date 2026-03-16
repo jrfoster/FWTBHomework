@@ -118,11 +118,11 @@ with open('logs.csv', mode = 'r', newline= '') as file:
         lineCounter += 1
         if row[0] == '':
             badLineList.append(checkRow(lineCounter, "No date provided",))
-        if row[1] == '':
+        elif row[1] == '':
             badLineList.append(checkRow(lineCounter, "Not a current catagory"))
-        if row[2] == '':
+        elif row[2] == '':
             badLineList.append(checkRow(lineCounter, "Not valid price"))
-        if row[3] == '':
+        elif row[3] == '':
             badLineList.append(checkRow(lineCounter, "No comment added"))
         elif len(row) > 4:
             badLineList.append(checkRow(lineCounter, "Too many entrys"))
