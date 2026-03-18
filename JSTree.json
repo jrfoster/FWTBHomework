@@ -104,6 +104,11 @@
             ]
           }
         ]
+      },
+      {
+        "id": "20",
+        "text": "Another branch here.",
+        "children": []
       }
     ]
   }

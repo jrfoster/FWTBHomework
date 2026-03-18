@@ -35,3 +35,22 @@ For me, a list done correctly can keep things organized and can be seen and read
 
 <h5>Things I would like to possibly change</h5>
 Have the sorting work both ways, so I don't have two ways of doing it.
+
+
+<h3>JavaScript</h3>
+
+<h5>What I did</h5><br>
+
+1. I implemented a method to read the JSON file and convert it into a dictionary, using each `id` as the key and storing the corresponding `parentId` and `text` in an array as the value.<br>
+
+2. I then created a function to find the head (root) of each tree. This function checks the `parentId` and recursively calls itself to trace back to the root, avoiding the need to iterate through the entire dataset each time.<br>
+
+3. After that, I stored all of the identified head nodes in an array so their associated messages could be displayed.<br>
+
+ At this point, I was unsure if this step was necessary. Based on my understanding of the first task, it seemed relevant, but as I progressed through the rest of the assignment, it did not appear to fit with the overall requirements. Because of this, I temporarily commented it out.<br>
+
+4. I then built an initial `buildTree` function using loops to construct the tree structure and output it as JSON.<br>
+
+5. After rereading the instructions, I realized my initial approach needed adjustment, so I revisited and reworked the `buildTree` function.<br>
+
+6. The revised `buildTree` function uses a helper function and recursion to construct the tree. It builds a new dictionary-like structure and recursively identifies and attaches child nodes, resulting in a correctly structured tree that is then output as JSON.<br>

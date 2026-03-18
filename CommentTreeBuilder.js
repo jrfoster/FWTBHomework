@@ -24,11 +24,16 @@ Deliverables
  A console.log statement that prints the tree structure formatted for readability (use
 JSON.stringify(tree, null, 2)).
 #### Maybe Done
+
+Questions
+1. What should I do with the arrray with the replys?
+2. How should the tree JSON look like?
+3. How should I test or see if my code in in O(n)?
 */
 const fs = require('fs');
 let idDict = {};
-let headArray = [];
-let seenHeads = {};
+//let headArray = [];
+//let seenHeads = {};
 
 // Read the JSON file and build the idDict
 try {
@@ -42,10 +47,7 @@ try {
 } catch (err) {
     console.error(err);
 }
-
-//console.log("ID Dictionary:", idDict);
-
-
+/*
 // Recursive function to find the head of a given id
 function findHead(id) {
     if (id !== null && idDict[id]) {
@@ -62,7 +64,6 @@ function findHead(id) {
     }
 }
 
-
 // Find all unique heads
 for (let id in idDict) {
     const head = findHead(id);
@@ -74,37 +75,43 @@ for (let id in idDict) {
     }
 }
 
+console.log("Heads:", headArray);*/
 
 // Build the tree structure
 function buildTree(dict) {
-    let tree = {};
-    for (let i in dict) {
-        tree[i] = {
-            id: i,
-            text: dict[1],
+
+    // Helper function to build a node and its children
+    function buildNode(id) {
+        let node = {
+            id: id,
+            text: dict[id][1],
             children: []
         };
-    }
 
+        // Find children recursively
+        Object.keys(dict).forEach(childId => {
+            if (dict[childId][0] == id) {
+                node.children.push(buildNode(childId));
+            }
+        });
+
+        return node;
+    }
+    // Start from roots
     let roots = [];
 
-    for (let i in dict) {
-        let parentId = dict[i][0];
-        if (parentId === null) {
-            roots.push(tree[i]);
-        }else if (tree[parentId]) {
-            tree[parentId].children.push(tree[i]);
+    Object.keys(dict).forEach(id => {
+        if (dict[id][0] === null) {
+            roots.push(buildNode(id));
         }
-    }
+    });
+
     return roots;
 }
 
 const tree = buildTree(idDict);
-//console.log(JSON.stringify(tree, null, 2));
-
 
 // Write the tree to a JSON file
-const makeJsonFile = JSON.stringify(tree, null, 2);
 const jsonString = JSON.stringify(tree, null, 2);
 
 fs.writeFile('JSTree.json', jsonString, (err) => {
@@ -114,6 +121,3 @@ fs.writeFile('JSTree.json', jsonString, (err) => {
   }
   console.log('Data written to file');
 });
-
-//console.log(JSON.stringify(tree, null, 2));
-//console.log("Heads:", headArray);*/
