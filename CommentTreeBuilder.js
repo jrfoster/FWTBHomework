@@ -28,7 +28,7 @@ JSON.stringify(tree, null, 2)).
 Questions
 1. What should I do with the arrray with the replys?
 2. How should the tree JSON look like?
-3. How should I test or see if my code in in O(n)?
+3. How should I test or see if my code in in 
 */
 const fs = require('fs');
 let idDict = {};

@@ -1,3 +1,16 @@
 line, error
-7, No date provided
-19, Too many entrys
+2, Too many entrys
+3, Not enough entrys
+4, No date provided
+5, Not a current catagory
+6, Not valid price
+7, Not valid price
+9, Too many entrys
+10, No date provided
+11, Not enough entrys
+14, Not enough entrys
+15, Not enough entrys
+17, Not a current catagory
+18, Not valid price
+19, Not valid price
+20, Not enough entrys

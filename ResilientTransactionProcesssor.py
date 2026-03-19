@@ -46,6 +46,7 @@ How should the json and errors.log file look?
 import csv  # Used for reading CSV file
 import os   # Used for deleting errors.log
 import json # Used for making json file
+from datetime import datetime # Used for checking if date is valid
 
 # Gets total and avg amount for category 
 def categoryTotal(categoryList):
@@ -58,6 +59,8 @@ def categoryTotal(categoryList):
         except ValueError:
             categoryList[i] = 0
             listLength -= 1
+    if listLength == 0:
+        listLength = 1
     avg = total / listLength
     avg = round(avg, 2)
     return total, avg
@@ -71,9 +74,12 @@ def makeCategoryList(categoryName, lst):
 
 # Checks and changes string to float and adds total for date
 def dateTotal(amount1, amount2):
+
     try:
         if isinstance(amount1, float):
             num1 = amount1
+            if '$' in amount2:
+                amount2 = getRidofDollarSign(amount2)
             num2 = float(amount2)
             total = num1 + num2
             return total
@@ -92,11 +98,64 @@ def dateTotal(amount1, amount2):
                 return num1
             except:
                 return None
+            
+def getRidofDollarSign(num):
+    if '$' in num:
+        num = num.replace('$', '')
+    return num
 
 # Makes list for errors.log
 def checkRow(lineCount, message):
     newList = [lineCount, message]
     return newList
+
+# Checks if each section in the row is valid
+def isRowBad(row, catlist):
+    if len(row) == 4:
+
+        # Date check
+        try:
+            datetime.strptime(row[0], '%Y-%m-%d')
+            #return True, None
+        except ValueError:
+            return False, "No date provided"
+        
+        # Category check
+        for i in range(len(catlist)):
+            if row[1] == catlist[i]:
+                break
+            else:
+                return False, "Not a current catagory"
+            
+        # Price check
+        if row[2] != '' and row[2] != "EXEMPT":
+            print("price check")
+            numTest = row[2]
+            print(numTest)
+
+            try:
+                if '$' in row[2]:
+                    numTest = row[2].replace('$', '')
+                num = float(numTest)
+            except ValueError:
+                return False, "Not valid price"
+            if row[2] == "EXEMPT":
+                return True, None
+        elif row[2] == '':
+            return False, "Not valid price"
+        print("price check passed")
+        # Comment check
+        if row[3] == '':
+            return False, "No comment added"
+        print("comment check passed")
+    elif len(row) > 4:
+        return False, "Too many entrys"
+    elif len(row) < 4:
+        return False, "Not enough entrys"
+    print("row check passed")
+    return True, None
+    
+
 
 # Reads csv file
 with open('logs.csv', mode = 'r', newline= '') as file:
@@ -112,22 +171,22 @@ with open('logs.csv', mode = 'r', newline= '') as file:
     avgCounter = 0
     dateCounter = 0
     firstloop = True
+    categoryNameList = ["Groceries", "Dining", "Utilities", "Electronics"]
+    #isRowBadBool = False
     next(csv_reader, None)  # Skips heading
     for row in csv_reader:  # reads CSV line by line
         # Check each row to see if it is valid 
         lineCounter += 1
-        if row[0] == '':
-            badLineList.append(checkRow(lineCounter, "No date provided",))
-        elif row[1] == '':
-            badLineList.append(checkRow(lineCounter, "Not a current catagory"))
-        elif row[2] == '':
-            badLineList.append(checkRow(lineCounter, "Not valid price"))
-        elif row[3] == '':
-            badLineList.append(checkRow(lineCounter, "No comment added"))
-        elif len(row) > 4:
-            badLineList.append(checkRow(lineCounter, "Too many entrys"))
-
+        print()
+        print(lineCounter)
+        print(row)
+      
+        if isRowBad(row, categoryNameList)[0] == False:
+            badLineList.append(checkRow(lineCounter, isRowBad(row, categoryNameList)[1]))
+            continue
+        
         # Puts the first enty from CSV into Date list
+        print(row, "good row")
         if firstloop == True:
             newRowList = [row[0], 0, 0]
             spendingInfoListByDate.append(newRowList)
@@ -146,6 +205,7 @@ with open('logs.csv', mode = 'r', newline= '') as file:
         # Adds and avg the days spending
         if row[0] == spendingInfoListByDate[dateCounter][0]:
             avgCounter += 1
+            #print(row[0] + ", " + row[2])
             if row[2] == "EXEMPT":
                 avgCounter -= 1
             total = dateTotal(spendingInfoListByDate[dateCounter][1], row[2])
@@ -160,7 +220,7 @@ with open('logs.csv', mode = 'r', newline= '') as file:
             else:
                 avgCounter = 1
     
-    categoryNameList = ["Groceries", "Dining", "Utilities", "Electronics"]
+    #categoryNameList = ["Groceries", "Dining", "Utilities", "Electronics"]
     categoryList = [groceriesList, diningList, utilitiesList, electronicsList]
     for i in range(len(categoryList)):
         spendingInfoListByCatagory.append(makeCategoryList(categoryNameList[i], categoryList[i]))
