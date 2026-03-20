@@ -1,16 +1,16 @@
 line, error
-2, Too many entrys
-3, Not enough entrys
-4, No date provided
-5, Not a current catagory
-6, Not valid price
-7, Not valid price
-9, Too many entrys
-10, No date provided
-11, Not enough entrys
-14, Not enough entrys
-15, Not enough entrys
-17, Not a current catagory
-18, Not valid price
-19, Not valid price
-20, Not enough entrys
+Line 2: Too many entrys
+Line 3: Not enough entrys
+Line 4: No date provided
+Line 5: Not a current catagory
+Line 6: Not valid price
+Line 7: Not valid price
+Line 9: Too many entrys
+Line 10: No date provided
+Line 11: Not enough entrys
+Line 14: Not enough entrys
+Line 15: Not enough entrys
+Line 17: Not a current catagory
+Line 18: Not valid price
+Line 19: Not valid price
+Line 20: Not enough entrys
