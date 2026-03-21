@@ -1,33 +1,128 @@
 [
  {
+  "date": "2024-01-01",
   "category": "Groceries",
-  "total": 4.0,
-  "average": 1.0
+  "total": 45.5,
+  "average": 45.5
  },
- {
-  "category": "Dining",
-  "total": 0,
-  "average": 0.0
- },
- {
-  "category": "Utilities",
-  "total": 0,
-  "average": 0.0
- },
- {
-  "category": "Electronics",
-  "total": 0,
-  "average": 0.0
- }
-][
  {
   "date": "2024-01-01",
-  "total": 3.0,
-  "average": 1.0
+  "category": "Dining",
+  "total": 30.0,
+  "average": 30.0
+ },
+ {
+  "date": "2024-01-01",
+  "category": "Utilities",
+  "total": 15.25,
+  "average": 15.25
  },
  {
   "date": "2024-01-02",
-  "total": 2.0,
-  "average": 1.0
+  "category": "Groceries",
+  "total": 12.0,
+  "average": 12.0
+ },
+ {
+  "date": "2024-01-02",
+  "category": "Electronics",
+  "total": 120.0,
+  "average": 120.0
+ },
+ {
+  "date": "2024-01-03",
+  "category": "Groceries",
+  "total": 65.0,
+  "average": 65.0
+ },
+ {
+  "date": "2024-01-03",
+  "category": "Dining",
+  "total": 15.0,
+  "average": 15.0
+ },
+ {
+  "date": "2024-01-04",
+  "category": "Dining",
+  "total": 22.5,
+  "average": 22.5
+ },
+ {
+  "date": "2024-01-04",
+  "category": "Utilities",
+  "total": 45.0,
+  "average": 45.0
+ },
+ {
+  "date": "2024-01-05",
+  "category": "Groceries",
+  "total": 10.0,
+  "average": 10.0
+ },
+ {
+  "date": "2024-01-05",
+  "category": "Electronics",
+  "total": 15.0,
+  "average": 15.0
+ },
+ {
+  "date": "2024-01-06",
+  "category": "Groceries",
+  "total": 55.2,
+  "average": 55.2
+ },
+ {
+  "date": "2024-01-07",
+  "category": "Dining",
+  "total": 18.0,
+  "average": 18.0
+ },
+ {
+  "date": "2024-01-07",
+  "category": "Utilities",
+  "total": 80.0,
+  "average": 80.0
+ },
+ {
+  "date": "2024-01-08",
+  "category": "Groceries",
+  "total": 33.4,
+  "average": 33.4
+ },
+ {
+  "date": "2024-01-09",
+  "category": "Dining",
+  "total": 12.5,
+  "average": 12.5
+ },
+ {
+  "date": "2024-01-09",
+  "category": "Electronics",
+  "total": 200.0,
+  "average": 200.0
+ },
+ {
+  "date": "2024-01-10",
+  "category": "Groceries",
+  "total": 40.0,
+  "average": 40.0
+ },
+ {
+  "date": "2024-01-10",
+  "category": "Utilities",
+  "total": 25.0,
+  "average": 25.0
+ },
+ {
+  "date": "2024-01-11",
+  "category": "Groceries",
+  "total": 14.0,
+  "average": 14.0
+ },
+ {
+  "date": "2024-01-11",
+  "category": "Dining",
+  "total": 35.0,
+  "average": 35.0
  }
 ]
