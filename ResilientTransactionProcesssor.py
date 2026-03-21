@@ -43,62 +43,6 @@ import os   # Used for deleting errors.log
 import json # Used for making json file
 from datetime import datetime # Used for checking if date is valid
 
-# Gets total and avg amount for category 
-def categoryTotal(categoryList):
-    listLength = len(categoryList)
-    total = 0
-    for i in range(listLength):
-        try:
-            num = float(categoryList[i])
-            total += num
-        except ValueError:
-            categoryList[i] = 0
-            listLength -= 1
-    if listLength == 0:
-        listLength = 1
-    avg = total / listLength
-    avg = round(avg, 2)
-    return total, avg
-
-# Make list for a category
-def makeCategoryList(categoryName, lst):
-    newList = []
-    totals = categoryTotal(lst)
-    newList += [categoryName, totals[0], totals[1]]
-    return newList
-
-# Checks and changes string to float and adds total for date
-def dateTotal(amount1, amount2):
-    try:
-        if isinstance(amount1, float):
-            num1 = amount1
-            if '$' in amount2:
-                amount2 = getRidofDollarSign(amount2)
-            num2 = float(amount2)
-            total = num1 + num2
-            return total
-        else:
-            num1 = float(amount1)
-            num2 = float(amount2)
-            total = num1 + num2
-            return total
-    except ValueError:
-        try:
-            num1 = float(amount1)
-            return num1
-        except:
-            try:
-                num1 = float(amount2)
-                return num1
-            except:
-                return None
-
-# Gets rid of dollar sign for price check
-def getRidofDollarSign(num):
-    if '$' in num:
-        num = num.replace('$', '')
-    return num
-
 # Makes list for errors.log
 def checkRow(lineCount, message):
     newList = [lineCount, message]
@@ -111,19 +55,24 @@ def isRowBad(row, catlist):
         # Date check
         try:
             datetime.strptime(row[0], '%Y-%m-%d')
-            #return True, None
         except ValueError:
             return False, "Invalid date format"
         
         # Category check
-        for i in range(len(catlist)):
-            if row[1] == catlist[i]:
+        for i in range(1):
+            if row[1] == catlist[0]:
+                break
+            elif row[1] == catlist[1]:
+                break
+            elif row[1] == catlist[2]:
+                break
+            elif row[1] == catlist[3]:
                 break
             else:
                 return False, "Missing category"
             
         # Price check
-        if row[2] != '' and row[2] != "EXEMPT":
+        if row[2] != '' :#and row[2] != "EXEMPT":
             numTest = row[2]
             try:
                 if '$' in row[2]:
@@ -131,85 +80,143 @@ def isRowBad(row, catlist):
                 num = float(numTest)
             except ValueError:
                 return False, "Non-numeric amount"
-            if row[2] == "EXEMPT":
-                return True, None
+            #if row[2] == "EXEMPT":
+                #return True, None
         elif row[2] == '':
             return False, "Non-numeric amount"
 
         # Comment check
         if row[3] == '':
             return False, "No comment added"
+    # Check if there are too many or not enough entrys   
     elif len(row) > 4:
         return False, "Too many entrys"
     elif len(row) < 4:
         return False, "Not enough entrys"
     return True, None
 
+def stringTofloat(value):
+    if isinstance(value, str):
+        try:
+            if "$" in value:
+                value = value.replace("$", "")
+            return float(value)
+        except ValueError:
+            return value
+    return value
+
+def foundDate(row):
+    newList = [row[0], row[1],stringTofloat(row[2])]
+    return newList
+
+def newDate(row):
+    newlist = [row[0], row[1], row[2]]
+    return newlist
+
+
+def makeCorrectList(currentList):
+
+    length = len(currentList)
+    
+    total = 0
+    
+    if length > 1:
+        for i in range(length):
+            total += stringTofloat(currentList[i][2])
+        newList = [currentList[0][0], currentList[0][1], total, total/length]
+            
+    elif length == 1:
+        total = stringTofloat(currentList[0][2])
+        newList = [currentList[0][0], currentList[0][1], total, total]    
+    return newList
+
+def clearList(currentList):
+    currentList.clear()
+
 # Reads csv file
 with open('logs.csv', mode = 'r', newline= '') as file:
     csv_reader = csv.reader(file)
-    spendingInfoListByDate = []
-    spendingInfoListByCatagory = []
+    dateCheck = ""
+    listforJsonFile = []
     groceriesList = []
     diningList = []
     utilitiesList = []
     electronicsList =[]
     badLineList = []
     lineCounter =1
-    avgCounter = 0
     dateCounter = 0
-    firstloop = True
     categoryNameList = ["Groceries", "Dining", "Utilities", "Electronics"]
+
     next(csv_reader, None)  # Skips heading
     for row in csv_reader:  # reads CSV line by line
-        # Check each row to see if it is valid 
         lineCounter += 1
-      
+
+        # Skips row if the row has an error in it
         if isRowBad(row, categoryNameList)[0] == False:
             badLineList.append(checkRow("Line " + str(lineCounter)+ ": ", isRowBad(row, categoryNameList)[1]))
             continue
-        
-        # Puts the first enty from CSV into Date list
-        if firstloop == True:
-            newRowList = [row[0], 0, 0]
-            spendingInfoListByDate.append(newRowList)
-            firstloop = False
 
-        # Populate info by category
-        if row[1] == "Groceries":
-            groceriesList.append(row[2])
-        elif row[1] == "Dining":
-            diningList.append(row[2])
-        elif row[1] == "Utilities":
-            utilitiesList.append(row[2])
-        elif row[1] == "Electronics":
-            electronicsList.append(row[2])
+        if dateCheck == "": # if the list is empty add the first date
+            if row[1] == categoryNameList[0]:
+                groceriesList.append(foundDate(row))
+            elif row[1] == categoryNameList[1]:
+                diningList.append(foundDate(row))
+            elif row[1] == categoryNameList[2]:
+                utilitiesList.append(foundDate(row))
+            elif row[1] == categoryNameList[3]:
+                electronicsList.append(foundDate(row))
+            dateCheck = row[0]
 
-        # Adds and avg the days spending
-        if row[0] == spendingInfoListByDate[dateCounter][0]:
-            avgCounter += 1
-            if row[2] == "EXEMPT":
-                avgCounter -= 1
-            if '$' in row[2]:
-                numTest = row[2].replace('$', '')
-                total = dateTotal(spendingInfoListByDate[dateCounter][1], numTest)
-            else:
-                total = dateTotal(spendingInfoListByDate[dateCounter][1], row[2])
-            spendingInfoListByDate[dateCounter][1] = total
-            spendingInfoListByDate[dateCounter][2] = total / avgCounter
-        else:   # Create new list for the day
-            newRowList = [row[0], row[2], row[2]]
-            spendingInfoListByDate.append(newRowList)
-            dateCounter += 1
-            if row[2] == "EXEMPT":
-                avgCounter = 0
-            else:
-                avgCounter = 1
-    
-    #categoryNameList = ["Groceries", "Dining", "Utilities", "Electronics"]
-    categoryList = [groceriesList, diningList, utilitiesList, electronicsList]
-    for i in range(len(categoryList)):
-        spendingInfoListByCatagory.append(makeCategoryList(categoryNameList[i], categoryList[i]))
+        elif row[0] == dateCheck:
+            if row[1] == categoryNameList[0]:
+                groceriesList.append(foundDate(row))
+            elif row[1] == categoryNameList[1]:
+                diningList.append(foundDate(row))
+            elif row[1] == categoryNameList[2]:
+                utilitiesList.append(foundDate(row))
+            elif row[1] == categoryNameList[3]:
+                electronicsList.append(foundDate(row))
+            dateCheck = row[0]
+
+        else:
+            if len(groceriesList) > 0:
+                listforJsonFile.append(makeCorrectList(groceriesList))
+                clearList(groceriesList)
+            if len(diningList) > 0:
+                print(diningList, "dining list")
+                listforJsonFile.append(makeCorrectList(diningList))
+                clearList(diningList)
+            if len(utilitiesList) > 0:
+                print(utilitiesList, "utilities list")
+                listforJsonFile.append(makeCorrectList(utilitiesList))
+                clearList(utilitiesList)    
+            if len(electronicsList) > 0:
+                print(electronicsList, "electronics list")
+                listforJsonFile.append(makeCorrectList(electronicsList))
+                clearList(electronicsList)
+
+            if row[1] == categoryNameList[0]:
+                groceriesList.append(foundDate(row))
+            elif row[1] == categoryNameList[1]:
+                diningList.append(foundDate(row))
+            elif row[1] == categoryNameList[2]:
+                utilitiesList.append(foundDate(row))
+            elif row[1] == categoryNameList[3]:
+                electronicsList.append(foundDate(row))
+            dateCheck = row[0]
+
+if len(groceriesList) > 0:
+    listforJsonFile.append(makeCorrectList(groceriesList))
+    clearList(groceriesList)
+if len(diningList) > 0:
+    listforJsonFile.append(makeCorrectList(diningList))
+    clearList(diningList)
+if len(utilitiesList) > 0:
+    listforJsonFile.append(makeCorrectList(utilitiesList))
+    clearList(utilitiesList)    
+if len(electronicsList) > 0:
+    listforJsonFile.append(makeCorrectList(electronicsList))
+    clearList(electronicsList)
 
 # Changes int to string to write in files
 def intToString(value):
@@ -235,14 +242,16 @@ with open(filename, 'a') as f:
              
         f.write("\n")
 
-# Makes the json file have labes by ziping info
-jsonFilename = "processed_data.json"
-dateHeader = ["date", "total", "average"]
-dictDate = [dict(zip(dateHeader, row)) for row in spendingInfoListByDate]
-catHeader = ["category","total", "average"]
-dictCat = [dict(zip(catHeader, row)) for row in spendingInfoListByCatagory]
 
-# Creates json file
-with open(jsonFilename, 'w') as json_file:
-    json.dump(dictCat, json_file, indent=1)
-    json.dump(dictDate, json_file, indent=1)
+result = {}
+
+for date, category, total, average in listforJsonFile:
+    if date not in result:
+        result[date] = {}
+    result[date][category] = {
+        "total spend": total,
+        "average transaction": average
+    }
+
+    with open('processed_data.json', 'w') as json_file:
+        json.dump(result, json_file, indent=1)  
