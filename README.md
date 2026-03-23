@@ -30,11 +30,26 @@
 
 13) Finally, I generated a JSON file for the processed date and category data. I created two additional lists containing the labels for the information in the date and category summaries, then used zip to combine the labels with their corresponding values before writing them to the JSON file.<br>
 
-<h5>Why I did this</h5>
-For me, a list done correctly can keep things organized and can be seen and read easily.
+14) After receiving feedback on my work, I focused on improving the error handling.
 
-<h5>Things I would like to possibly change</h5>
-Have the sorting work both ways, so I don't have two ways of doing it.
+15) I imported the `datetime` module to verify that each date is correctly formatted and valid.
+
+16) Next, I checked whether each category matches one of the predefined valid options.
+
+17) I then validated the price field to ensure it is a proper numeric value, with or without a “$” symbol.
+
+18 I also verified that the description field contains a valid string.
+
+19) Finally, I checked each row to ensure it has the correct number of columns—no more, no less.
+
+20) I realized that to properly match the required JSON output format, I needed to restructure my data organization. This led me to remove a significant portion of my original code and rebuild it more effectively.
+
+21) I introduced a new variable, `dateCheck`, to group entries by date. After organizing the data by day, I stored the information in lists, with separate lists for each category.
+
+22) When a new date is encountered, I process each category list to calculate the total and average spending, then compile this into a new structure for the final JSON output. Afterward, I reset the category lists to prepare for the next date.
+
+23) Lastly, I reformatted how the data is written to the JSON file to ensure the final output matches the expected structure.
+
 
 
 <h3>JavaScript</h3>
